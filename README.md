@@ -18,9 +18,19 @@ Create your own environment variables :
 docker-compose up
 ```
 
+> Watch carefully the logs, containers can be up while still having errors
+
 ### Install api vendors
 
 ```sh
 docker exec -it moko_php bash
 ./composer.phar install --prefer-dist -o
 ```
+
+## Monitoring
+
+http://localhost:8000/health
+
+## Homepage
+
+http://localhost:8000
