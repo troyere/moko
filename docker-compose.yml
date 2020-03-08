@@ -1,0 +1,55 @@
+version: "3.7"
+
+services:
+
+  mongo:
+    container_name: moko_mongo
+    build:
+      context: .
+      target: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      - MONGO_INITDB_USERNAME=${MONGO_INITDB_USERNAME}
+      - MONGO_INITDB_PASSWORD=${MONGO_INITDB_PASSWORD}
+    volumes:
+      - ./docker/mongo/initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "27020:27017"
+
+  nginx:
+    container_name: moko_nginx
+    build:
+      context: .
+      target: nginx
+    ports:
+      - "8000:80"
+    links:
+      - php
+      - mongo
+    volumes:
+      - ./api:/app
+      - ./docker/nginx/site.conf:/etc/nginx/conf.d/default.conf
+    working_dir: /app
+
+  php:
+    container_name: moko_php
+    build: 
+      context: .
+      target: php
+    links:
+      - mongo
+    volumes: 
+      - ./api:/app
+    working_dir: /app
+
+  node:
+    container_name: moko_node
+    build:
+      context: .
+      target: node
+    volumes: 
+      - ./front:/app
+    working_dir: /app
