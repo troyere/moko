@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Validation\JsonSchema;
+namespace App\Infrastructure\JsonSchema\Exception;
 
+use App\Infrastructure\JsonSchema\Validation\JsonSchemaValidationResult;
 use Exception;
 use Throwable;
 

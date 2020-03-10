@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Note;
+namespace App\Infrastructure\Note\Adapter;
 
-use App\Domain\Note\UpdateNote;
+use App\Domain\Note\Adapter\UpdateNote;
 
 class UpdateNoteWithMongo implements UpdateNote
 {

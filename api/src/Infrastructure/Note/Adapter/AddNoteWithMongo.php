@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Note;
+namespace App\Infrastructure\Note\Adapter;
 
-use App\Domain\Note\AddNote;
+use App\Domain\Note\Adapter\AddNote;
 use App\Domain\Note\ValueObject\AddNoteRequest;
 use MongoDB\Client;
 

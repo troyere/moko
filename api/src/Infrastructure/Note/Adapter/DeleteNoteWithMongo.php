@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Note;
+namespace App\Infrastructure\Note\Adapter;
 
-use App\Domain\Note\DeleteNote;
+use App\Domain\Note\Adapter\DeleteNote;
 
 class DeleteNoteWithMongo implements DeleteNote
 {

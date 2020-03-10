@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Note;
+namespace App\Infrastructure\Note\Adapter;
 
-use App\Domain\Note\ReadNote;
+use App\Domain\Note\Adapter\ReadNote;
 
 class ReadNoteWithMongo implements ReadNote
 {

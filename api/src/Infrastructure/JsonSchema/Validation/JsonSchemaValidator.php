@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Infrastructure\Validation\JsonSchema;
+namespace App\Infrastructure\JsonSchema\Validation;
 
+use App\Infrastructure\JsonSchema\Exception\InvalidJsonException;
 use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\ValidationError;
 use Opis\JsonSchema\ValidationResult;
 use Opis\JsonSchema\Validator;
 
-abstract class JsonSchemaValidator
+class JsonSchemaValidator
 {
     private Validator $validator;
 
@@ -16,23 +17,17 @@ abstract class JsonSchemaValidator
         $this->validator = $validator;
     }
 
-    abstract function getSchema(): string;
-
     /**
      * @param mixed $data
+     * @param string $schema
      * @throws InvalidJsonException
      */
-    public function validate($data)
+    public function validate($data, string $schema)
     {
-        $result = $this->validator->schemaValidation($data, $this->createSchema());
+        $result = $this->validator->schemaValidation($data, Schema::fromJsonString($schema));
         if (!$result->isValid()) {
             throw new InvalidJsonException($this->createResult($result));
         }
-    }
-
-    private function createSchema(): Schema
-    {
-        return Schema::fromJsonString($this->getSchema());
     }
 
     private function createResult(ValidationResult $result): JsonSchemaValidationResult

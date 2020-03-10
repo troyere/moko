@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Validation\JsonSchema;
+namespace App\Infrastructure\JsonSchema\Validation;
 
 use StdClass;
 use JsonSerializable;

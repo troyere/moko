@@ -1,9 +1,9 @@
 <?php
 
-namespace App\EventListener;
+namespace App\Infrastructure\EventListener;
 
-use App\Infrastructure\Exceptions\JsonDecodeReturnsNullException;
-use App\Infrastructure\Validation\JsonSchema\InvalidJsonException;
+use App\Infrastructure\JsonSchema\Exception\InvalidJsonException;
+use App\Infrastructure\JsonSchema\Exception\JsonDecodeReturnsNullException;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

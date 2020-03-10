@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Note;
+namespace App\Domain\Note\Adapter;
 
 interface UpdateNote
 {

@@ -6,6 +6,8 @@ use JsonSerializable;
 
 class AddNoteRequest implements JsonSerializable
 {
+    public const JSON_SCHEMA_PATH = __DIR__.'/../Resources/json/add_note.schema.json';
+
     private string $title;
     private string $content;
 
