@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Infrastructure\Json;
+namespace App\Infrastructure\Validation\JsonSchema;
 
 use JsonSerializable;
 
-class JsonValidationResult implements JsonSerializable
+class JsonSchemaValidationResult implements JsonSerializable
 {
     private bool $isValid;
 
     /**
-     * @var JsonValidationError[]
+     * @var JsonSchemaValidationError[]
      */
     private array $errors;
 
     /**
      * @param bool $isValid
-     * @param JsonValidationError[] $errors
+     * @param JsonSchemaValidationError[] $errors
      */
     public function __construct(bool $isValid, array $errors)
     {

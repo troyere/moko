@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Infrastructure\Json;
+namespace App\Infrastructure\Validation\JsonSchema;
 
-use App\Infrastructure\Json\Exceptions\InvalidJsonException;
-use App\Infrastructure\Json\Exceptions\JsonDecodeReturnsNullException;
 use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\ValidationError;
 use Opis\JsonSchema\ValidationResult;
 use Opis\JsonSchema\Validator;
 
-abstract class JsonValidator
+abstract class JsonSchemaValidator
 {
     private Validator $validator;
 
@@ -21,17 +19,11 @@ abstract class JsonValidator
     abstract function getSchema(): string;
 
     /**
-     * @param string $json
-     * @throws JsonDecodeReturnsNullException
+     * @param mixed $data
      * @throws InvalidJsonException
      */
-    public function validate(string $json)
+    public function validate($data)
     {
-        $data = json_decode($json);
-        if ($data === null) {
-            throw new JsonDecodeReturnsNullException();
-        }
-
         $result = $this->validator->schemaValidation($data, $this->createSchema());
         if (!$result->isValid()) {
             throw new InvalidJsonException($this->createResult($result));
@@ -43,12 +35,12 @@ abstract class JsonValidator
         return Schema::fromJsonString($this->getSchema());
     }
 
-    private function createResult(ValidationResult $result): JsonValidationResult
+    private function createResult(ValidationResult $result): JsonSchemaValidationResult
     {
-        return new JsonValidationResult(
+        return new JsonSchemaValidationResult(
             $result->isValid(),
             array_map(
-                fn(ValidationError $error) => new JsonValidationError(
+                fn(ValidationError $error) => new JsonSchemaValidationError(
                     $error->schema(),
                     $error->keyword(),
                     (object) $error->keywordArgs()

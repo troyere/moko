@@ -3,15 +3,25 @@
 namespace App\Infrastructure\Note;
 
 use App\Domain\Note\AddNote;
-use App\Domain\Note\ValueObject\AddNoteCommand;
-use App\Domain\Note\ValueObject\Note;
+use App\Domain\Note\ValueObject\AddNoteRequest;
+use MongoDB\Client;
 
 class AddNoteWithMongo implements AddNote
 {
-    public function __invoke(AddNoteCommand $command): Note
+    private Client $client;
+
+    public function __construct(Client $client)
     {
+        $this->client = $client;
+    }
 
+    public function __invoke(AddNoteRequest $addNoteRequest): array
+    {
+        $collection = $this->client->selectCollection('moko', 'notes');
+        $insertOneResult = $collection->insertOne($addNoteRequest->jsonSerialize());
 
-        return new Note();
+        // TOTO : gerer mes propres id ?
+
+        return [];
     }
 }

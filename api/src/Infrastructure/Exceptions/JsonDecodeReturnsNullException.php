@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Json\Exceptions;
+namespace App\Infrastructure\Exceptions;
 
 use Exception;
 use Throwable;

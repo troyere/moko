@@ -2,10 +2,9 @@
 
 namespace App\Domain\Note;
 
-use App\Domain\Note\ValueObject\AddNoteCommand;
-use App\Domain\Note\ValueObject\Note;
+use App\Domain\Note\ValueObject\AddNoteRequest;
 
 interface AddNote
 {
-    public function __invoke(AddNoteCommand $command) : Note;
+    public function __invoke(AddNoteRequest $addNoteRequest) : array;
 }

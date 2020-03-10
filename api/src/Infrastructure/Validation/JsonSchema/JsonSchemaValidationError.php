@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Infrastructure\Json;
+namespace App\Infrastructure\Validation\JsonSchema;
 
 use StdClass;
 use JsonSerializable;
 
-class JsonValidationError implements JsonSerializable
+class JsonSchemaValidationError implements JsonSerializable
 {
     private StdClass $schema;
     private string $keyword;

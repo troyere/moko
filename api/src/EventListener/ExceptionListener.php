@@ -2,42 +2,63 @@
 
 namespace App\EventListener;
 
-use App\Infrastructure\Json\Exceptions\InvalidJsonException;
-use App\Infrastructure\Json\Exceptions\JsonDecodeReturnsNullException;
+use App\Infrastructure\Exceptions\JsonDecodeReturnsNullException;
+use App\Infrastructure\Validation\JsonSchema\InvalidJsonException;
+use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class ExceptionListener
 {
+    private string $env;
+
+    public function __construct(string $env)
+    {
+        $this->env = $env;
+    }
+
     public function onKernelException(ExceptionEvent $event): void
     {
-        $e = $event->getThrowable();
+        $domainJsonResponse = $this->getDomainJsonResponse($event);
 
-        $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
-        $message = $e->getMessage();
-        $context = [];
-        $headers = [];
-
-        if ($e instanceof HttpExceptionInterface) {
-            $statusCode = $e->getStatusCode();
-            $headers = $e->getHeaders();
-        } else if ($e instanceof JsonDecodeReturnsNullException) {
-            $statusCode = Response::HTTP_BAD_REQUEST;
-        } else if ($e instanceof InvalidJsonException) {
-            $statusCode = Response::HTTP_BAD_REQUEST;
-            $context = $e->getResult();
+        if ($domainJsonResponse !== null) {
+            $event->setResponse($domainJsonResponse);
+            return;
         }
 
-        $data = [];
-        if (!empty($message)) {
-            $data['message'] = $message;
-        }
-        if (!empty($context)) {
-            $data['context'] = $context;
+        $event->setResponse($this->getJsonResponse($event));
+    }
+
+    private function getDomainJsonResponse(ExceptionEvent $event): ?JsonResponse
+    {
+        $t = $event->getThrowable();
+
+        if ($t instanceof JsonDecodeReturnsNullException) {
+            return new JsonResponse(
+                ['message' => $t->getMessage()],
+                Response::HTTP_BAD_REQUEST
+            );
+        } else if ($t instanceof InvalidJsonException) {
+            return new JsonResponse(
+                ['message' => $t->getMessage(), 'result' => $t->getResult()],
+                Response::HTTP_BAD_REQUEST
+            );
         }
 
-        $event->setResponse(new JsonResponse($data, $statusCode, $headers));
+        return null;
+    }
+
+    private function getJsonResponse(ExceptionEvent $event): JsonResponse
+    {
+        $t = FlattenException::createFromThrowable($event->getThrowable());
+
+        if ($this->env === 'prod') {
+            $message = sprintf('The server returned a %s %s.', $t->getStatusCode(), $t->getStatusText());
+
+            return new JsonResponse(['message' => $message], $t->getStatusCode());
+        }
+
+        return new JsonResponse(['message' => $t->getMessage(), 'trace' => $t->getTrace()], $t->getStatusCode());
     }
 }

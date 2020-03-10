@@ -2,10 +2,7 @@
 
 namespace App\Domain\Note;
 
-use App\Domain\Note\ValueObject\Note;
-use App\Domain\Note\ValueObject\ReadNoteCommand;
-
 interface ReadNote
 {
-    public function __invoke(ReadNoteCommand $command) : Note;
+    public function __invoke(array $note) : array;
 }
