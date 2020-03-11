@@ -1,6 +1,6 @@
 # Moko
 
-Note, reminder, todolist manager
+Sandbox for now, trying something with JSON Schema
 
 ## Install
 
