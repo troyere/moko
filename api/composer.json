@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
+        "ext-mongodb": "*",
         "mongodb/mongodb": "^1.6",
         "opis/json-schema": "^1.0",
         "sensio/framework-extra-bundle": "^5.5",

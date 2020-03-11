@@ -40,6 +40,11 @@ services:
     MongoDB\Client:
         arguments: ['%mongo.uri%']
 
+    App\Infrastructure\Note\ParamConverter\NoteIdParamConverter:
+        tags:
+            - { name: request.param_converter, converter: note_id.converter }
+
     App\Infrastructure\Note\ParamConverter\AddNoteParamConverter:
         tags:
             - { name: request.param_converter, converter: add_note.converter }
+

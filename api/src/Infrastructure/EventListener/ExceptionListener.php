@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\EventListener;
 
+use App\Domain\Note\Exceptions\NoteIdNotFoundException;
 use App\Infrastructure\JsonSchema\Exception\InvalidJsonException;
 use App\Infrastructure\JsonSchema\Exception\JsonDecodeReturnsNullException;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
@@ -44,6 +45,11 @@ class ExceptionListener
                 ['message' => $t->getMessage(), 'result' => $t->getResult()],
                 Response::HTTP_BAD_REQUEST
             );
+        } else if ($t instanceof NoteIdNotFoundException) {
+            return new JsonResponse(
+                ['message' => $t->getMessage()],
+                Response::HTTP_NOT_FOUND
+            );
         }
 
         return null;
@@ -59,6 +65,9 @@ class ExceptionListener
             return new JsonResponse(['message' => $message], $t->getStatusCode());
         }
 
-        return new JsonResponse(['message' => $t->getMessage(), 'trace' => $t->getTrace()], $t->getStatusCode());
+        return new JsonResponse(
+            ['class' => get_class($event->getThrowable()), 'message' => $t->getMessage(), 'trace' => $t->getTrace()],
+            $t->getStatusCode()
+        );
     }
 }

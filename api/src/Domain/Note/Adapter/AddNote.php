@@ -3,8 +3,13 @@
 namespace App\Domain\Note\Adapter;
 
 use App\Domain\Note\ValueObject\AddNoteRequest;
+use App\Domain\Note\ValueObject\NoteId;
 
 interface AddNote
 {
-    public function __invoke(AddNoteRequest $addNoteRequest) : array;
+    /**
+     * @param AddNoteRequest $addNoteRequest
+     * @return NoteId
+     */
+    public function __invoke(AddNoteRequest $addNoteRequest) : NoteId;
 }

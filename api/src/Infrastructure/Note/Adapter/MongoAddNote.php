@@ -4,9 +4,10 @@ namespace App\Infrastructure\Note\Adapter;
 
 use App\Domain\Note\Adapter\AddNote;
 use App\Domain\Note\ValueObject\AddNoteRequest;
+use App\Infrastructure\Note\ValueObject\MongoNoteId;
 use MongoDB\Client;
 
-class AddNoteWithMongo implements AddNote
+class MongoAddNote implements AddNote
 {
     private Client $client;
 
@@ -15,13 +16,11 @@ class AddNoteWithMongo implements AddNote
         $this->client = $client;
     }
 
-    public function __invoke(AddNoteRequest $addNoteRequest): array
+    public function __invoke(AddNoteRequest $addNoteRequest): MongoNoteId
     {
         $collection = $this->client->selectCollection('moko', 'notes');
         $insertOneResult = $collection->insertOne($addNoteRequest->jsonSerialize());
 
-        // TOTO : gerer mes propres id ?
-
-        return [];
+        return new MongoNoteId($insertOneResult->getInsertedId());
     }
 }
