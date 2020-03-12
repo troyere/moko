@@ -17,6 +17,7 @@ class DeleteNoteController
 {
     public function __invoke(NoteId $id, DeleteNote $deleteNote) : JsonResponse
     {
-        return new JsonResponse($deleteNote($id), Response::HTTP_OK);
+        $deleteNote($id);
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

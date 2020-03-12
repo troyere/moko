@@ -6,5 +6,5 @@ use App\Domain\Note\ValueObject\NoteId;
 
 interface DeleteNote
 {
-    public function __invoke(NoteId $id) : NoteId;
+    public function __invoke(NoteId $id) : void;
 }
