@@ -4,12 +4,12 @@ namespace App\Domain\Note\ValueObject;
 
 use JsonSerializable;
 
-class AddNoteRequest implements JsonSerializable
+class NoteValues implements JsonSerializable
 {
-    public const JSON_SCHEMA_PATH = __DIR__.'/../Resources/json/add_note.schema.json';
+    public const JSON_SCHEMA_PATH = __DIR__.'/../Resources/json/note.schema.json';
 
-    private string $title;
-    private string $content;
+    protected string $title;
+    protected string $content;
 
     public function __construct(string $title, string $content)
     {
@@ -17,6 +17,9 @@ class AddNoteRequest implements JsonSerializable
         $this->content = $content;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function jsonSerialize(): array
     {
         return [

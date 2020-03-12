@@ -31,6 +31,9 @@ class JsonSchemaValidationResult implements JsonSerializable
         return $this->isValid;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function jsonSerialize(): array
     {
         return [

@@ -12,6 +12,9 @@ class JsonSchema
 {
     protected string $path;
 
+    /**
+     * @param mixed[] $values
+     */
     public function __construct(array $values)
     {
         if (empty($values['path'])) {

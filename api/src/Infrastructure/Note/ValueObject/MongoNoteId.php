@@ -7,30 +7,32 @@ use MongoDB\BSON\ObjectId;
 
 class MongoNoteId implements BaseNoteId
 {
-    private ObjectId $id;
+    private ObjectId $objectId;
 
-    public function __construct(ObjectId $id)
+    /**
+     * @param string|ObjectId $id
+     */
+    public function __construct($id)
     {
-        $this->id = $id;
+        if ($id instanceof ObjectId) {
+            $this->objectId = $id;
+        }
+
+        $this->objectId = new ObjectId((string) $id);
     }
 
     public function getId(): ObjectId
     {
-        return $this->id;
-    }
-
-    static public function createFromString(string $id): self
-    {
-        return new self(new ObjectId($id));
+        return $this->objectId;
     }
 
     public function __toString(): string
     {
-        return (string) $this->id;
+        return (string) $this->objectId;
     }
 
     public function jsonSerialize(): string
     {
-        return (string) $this->id;
+        return (string) $this->objectId;
     }
 }

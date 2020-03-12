@@ -4,7 +4,9 @@ namespace App\Infrastructure\JsonSchema\EventListener;
 
 use App\Infrastructure\JsonSchema\Annotation\JsonSchema;
 use App\Infrastructure\JsonSchema\Exception\JsonDecodeReturnsNullException;
+use App\Infrastructure\JsonSchema\Exception\SchemaFileNotReadableException;
 use App\Infrastructure\JsonSchema\Validation\JsonSchemaValidator;
+use Closure;
 use Doctrine\Common\Annotations\Reader;
 use ReflectionClass;
 use ReflectionException;
@@ -30,12 +32,20 @@ class JsonSchemaControllerListener
         $annotation = $this->getAnnotation($event->getController(), JsonSchema::class);
 
         if ($annotation instanceof JsonSchema) {
-            $content = json_decode($event->getRequest()->getContent());
-            if ($content === null) {
+            $content = $event->getRequest()->getContent();
+            assert(is_string($content));
+
+            $jsonData = json_decode($content);
+            if ($jsonData === null) {
                 throw new JsonDecodeReturnsNullException();
             }
 
-            $this->validator->validate($content, file_get_contents($annotation->getPath()));
+            $jsonSchema = file_get_contents($annotation->getPath());
+            if ($jsonSchema === false) {
+                throw new SchemaFileNotReadableException();
+            }
+
+            $this->validator->validate($jsonData, $jsonSchema);
         }
     }
 
@@ -52,16 +62,17 @@ class JsonSchemaControllerListener
         return null;
     }
 
-    private function getReflectionController(callable $controller): Reflector
+    private function getReflectionController(callable $controller): ?Reflector
     {
         try {
             if (is_array($controller)) {
                 return new ReflectionMethod($controller[0], $controller[1]);
             } else if (is_object($controller) && is_callable([$controller, '__invoke'])) {
                 return new ReflectionClass($controller);
-            } else {
+            } else if (is_string($controller) || $controller instanceof Closure) {
                 return new ReflectionFunction($controller);
             }
+            return null;
         } catch (ReflectionException $e) {
             throw new UnexpectedValueException('Invalid controller.', 0, $e);
         }

@@ -12,7 +12,7 @@ class NoteIdParamConverter implements ParamConverterInterface
 {
     public function apply(Request $request, ParamConverter $configuration): bool
     {
-        $request->attributes->set($configuration->getName(), MongoNoteId::createFromString($request->get('id')));
+        $request->attributes->set($configuration->getName(), new MongoNoteId($request->get('id')));
 
         return true;
     }

@@ -7,6 +7,8 @@ use Opis\JsonSchema\Schema;
 use Opis\JsonSchema\ValidationError;
 use Opis\JsonSchema\ValidationResult;
 use Opis\JsonSchema\Validator;
+use StdClass;
+use UnexpectedValueException;
 
 class JsonSchemaValidator
 {
@@ -22,7 +24,7 @@ class JsonSchemaValidator
      * @param string $schema
      * @throws InvalidJsonException
      */
-    public function validate($data, string $schema)
+    public function validate($data, string $schema): void
     {
         $result = $this->validator->schemaValidation($data, Schema::fromJsonString($schema));
         if (!$result->isValid()) {
@@ -34,14 +36,16 @@ class JsonSchemaValidator
     {
         return new JsonSchemaValidationResult(
             $result->isValid(),
-            array_map(
-                fn(ValidationError $error) => new JsonSchemaValidationError(
-                    $error->schema(),
-                    $error->keyword(),
-                    (object) $error->keywordArgs()
-                ),
-                $result->getErrors()
-            )
+            array_map([$this, 'createValidationError'], $result->getErrors())
         );
+    }
+
+    private function createValidationError(ValidationError $error): JsonSchemaValidationError
+    {
+        if (!$error->schema() instanceof StdClass) {
+            throw new UnexpectedValueException('Empty schema.');
+        }
+
+        return new JsonSchemaValidationError($error->schema(), $error->keyword(), (object) $error->keywordArgs());
     }
 }

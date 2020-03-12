@@ -4,19 +4,19 @@ namespace App\Domain\Note\ValueObject;
 
 use JsonSerializable;
 
-class Note implements JsonSerializable
+class Note extends NoteValues implements JsonSerializable
 {
     private NoteId $id;
-    private string $title;
-    private string $content;
 
     public function __construct(NoteId $id, string $title, string $content)
     {
         $this->id = $id;
-        $this->title = $title;
-        $this->content = $content;
+        parent::__construct($title, $content);
     }
 
+    /**
+     * @return mixed[]
+     */
     public function jsonSerialize(): array
     {
         return [

@@ -2,14 +2,10 @@
 
 namespace App\Domain\Note\Adapter;
 
-use App\Domain\Note\ValueObject\AddNoteRequest;
+use App\Domain\Note\ValueObject\NoteValues;
 use App\Domain\Note\ValueObject\NoteId;
 
 interface AddNote
 {
-    /**
-     * @param AddNoteRequest $addNoteRequest
-     * @return NoteId
-     */
-    public function __invoke(AddNoteRequest $addNoteRequest) : NoteId;
+    public function __invoke(NoteValues $content) : NoteId;
 }

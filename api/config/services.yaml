@@ -44,7 +44,6 @@ services:
         tags:
             - { name: request.param_converter, converter: note_id.converter }
 
-    App\Infrastructure\Note\ParamConverter\AddNoteParamConverter:
+    App\Infrastructure\Note\ParamConverter\NoteValuesParamConverter:
         tags:
-            - { name: request.param_converter, converter: add_note.converter }
-
+            - { name: request.param_converter, converter: note_values.converter }

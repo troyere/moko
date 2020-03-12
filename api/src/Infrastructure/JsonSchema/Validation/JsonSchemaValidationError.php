@@ -18,6 +18,9 @@ class JsonSchemaValidationError implements JsonSerializable
         $this->keywordArgs = $keywordArgs;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function jsonSerialize(): array
     {
         return [
