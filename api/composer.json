@@ -17,7 +17,8 @@
         "symfony/yaml": "^5.0"
     },
     "require-dev": {
-        "phpstan/phpstan": "^0.12"
+        "phpstan/phpstan": "^0.12",
+        "phpunit/phpunit": "^9.0"
     },
     "prefer-stable" : true,
     "config": {
