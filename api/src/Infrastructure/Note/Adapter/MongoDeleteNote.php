@@ -3,23 +3,21 @@
 namespace App\Infrastructure\Note\Adapter;
 
 use App\Domain\Note\Adapter\DeleteNote;
-use App\Domain\Note\Exceptions\NoteNotFoundException;
-use App\Domain\Note\ValueObject\Note;
 use App\Domain\Note\ValueObject\NoteId;
-use MongoDB\Client;
+use MongoDB\Collection;
+use MongoDB\Database;
 
 class MongoDeleteNote implements DeleteNote
 {
-    private Client $client;
+    private Collection $collection;
 
-    public function __construct(Client $client)
+    public function __construct(Database $database, string $collectionNotes)
     {
-        $this->client = $client;
+        $this->collection = $database->selectCollection($collectionNotes);
     }
 
     public function __invoke(NoteId $id): void
     {
-        $collection = $this->client->selectCollection('moko', 'notes');
-        $collection->deleteOne(['_id' => $id->getId()]);
+        $this->collection->deleteOne(['_id' => $id->getId()]);
     }
 }

@@ -2,6 +2,7 @@ parameters:
   mongo.host: '%env(MONGO_HOST)%'
   mongo.port: '%env(MONGO_PORT)%'
   mongo.database: '%env(MONGO_DATABASE)%'
+  mongo.collection.notes: notes
   mongo.username: '%env(MONGO_USERNAME)%'
   mongo.password: '%env(MONGO_PASSWORD)%'
   mongo.uri: 'mongodb://%mongo.username%:%mongo.password%@%mongo.host%:%mongo.port%/%mongo.database%'
