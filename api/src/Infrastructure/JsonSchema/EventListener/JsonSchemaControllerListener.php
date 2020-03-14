@@ -36,12 +36,12 @@ class JsonSchemaControllerListener
             assert(is_string($content));
 
             $jsonData = json_decode($content);
-            if (null === $jsonData) {
+            if ($jsonData === null) {
                 throw new JsonDecodeReturnsNullException();
             }
 
             $jsonSchema = file_get_contents($annotation->getPath());
-            if (false === $jsonSchema) {
+            if ($jsonSchema === false) {
                 throw new SchemaFileNotReadableException();
             }
 

@@ -23,7 +23,7 @@ class ExceptionListener
     {
         $domainJsonResponse = $this->getDomainJsonResponse($event);
 
-        if (null !== $domainJsonResponse) {
+        if ($domainJsonResponse !== null) {
             $event->setResponse($domainJsonResponse);
 
             return;
@@ -60,7 +60,7 @@ class ExceptionListener
     {
         $t = FlattenException::createFromThrowable($event->getThrowable());
 
-        if ('prod' === $this->env) {
+        if ($this->env === 'prod') {
             $message = sprintf('The server returned a %s %s.', $t->getStatusCode(), $t->getStatusText());
 
             return new JsonResponse(['message' => $message], $t->getStatusCode());

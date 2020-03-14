@@ -9,11 +9,17 @@ PHP_BIN = php
 phpstan:
 	$(PHP_BIN) vendor/bin/phpstan analyse src tests --level=max
 
-# Coding Standards
+# Check Code Style
+
+.PHONY: phpcs
+phpcs:
+	$(PHP_BIN) vendor/bin/phpcs
+
+# Fix Code Style
 
 .PHONY: phpcsfix
 phpcsfix:
-	$(PHP_BIN) vendor/bin/php-cs-fixer fix
+	$(PHP_BIN) vendor/bin/phpcbf
 
 # Project Installation
 
