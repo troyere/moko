@@ -23,8 +23,9 @@ class ExceptionListener
     {
         $domainJsonResponse = $this->getDomainJsonResponse($event);
 
-        if ($domainJsonResponse !== null) {
+        if (null !== $domainJsonResponse) {
             $event->setResponse($domainJsonResponse);
+
             return;
         }
 
@@ -40,12 +41,12 @@ class ExceptionListener
                 ['message' => $t->getMessage()],
                 Response::HTTP_BAD_REQUEST
             );
-        } else if ($t instanceof InvalidJsonException) {
+        } elseif ($t instanceof InvalidJsonException) {
             return new JsonResponse(
                 ['message' => $t->getMessage(), 'result' => $t->getResult()],
                 Response::HTTP_BAD_REQUEST
             );
-        } else if ($t instanceof NoteNotFoundException) {
+        } elseif ($t instanceof NoteNotFoundException) {
             return new JsonResponse(
                 ['message' => $t->getMessage()],
                 Response::HTTP_NOT_FOUND
@@ -59,7 +60,7 @@ class ExceptionListener
     {
         $t = FlattenException::createFromThrowable($event->getThrowable());
 
-        if ($this->env === 'prod') {
+        if ('prod' === $this->env) {
             $message = sprintf('The server returned a %s %s.', $t->getStatusCode(), $t->getStatusText());
 
             return new JsonResponse(['message' => $message], $t->getStatusCode());

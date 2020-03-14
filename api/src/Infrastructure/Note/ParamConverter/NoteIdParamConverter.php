@@ -19,6 +19,6 @@ class NoteIdParamConverter implements ParamConverterInterface
 
     public function supports(ParamConverter $configuration): bool
     {
-        return $configuration->getClass() === NoteId::class;
+        return NoteId::class === $configuration->getClass();
     }
 }

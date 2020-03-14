@@ -14,7 +14,6 @@ class JsonSchemaValidationResult implements JsonSerializable
     private array $errors;
 
     /**
-     * @param bool $isValid
      * @param JsonSchemaValidationError[] $errors
      */
     public function __construct(bool $isValid, array $errors)

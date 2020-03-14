@@ -7,5 +7,5 @@ use App\Domain\Note\ValueObject\NoteId;
 
 interface ReadNote
 {
-    public function __invoke(NoteId $id) : Note;
+    public function __invoke(NoteId $id): Note;
 }

@@ -21,7 +21,7 @@ class JsonSchemaValidator
 
     /**
      * @param mixed $data
-     * @param string $schema
+     *
      * @throws InvalidJsonException
      */
     public function validate($data, string $schema): void

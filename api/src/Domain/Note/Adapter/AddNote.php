@@ -7,5 +7,5 @@ use App\Domain\Note\ValueObject\NoteValues;
 
 interface AddNote
 {
-    public function __invoke(NoteValues $content) : Note;
+    public function __invoke(NoteValues $content): Note;
 }

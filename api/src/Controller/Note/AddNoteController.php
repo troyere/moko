@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AddNoteController
 {
-    public function __invoke(AddNote $addNote, NoteValues $note) : JsonResponse
+    public function __invoke(AddNote $addNote, NoteValues $note): JsonResponse
     {
         return new JsonResponse($addNote($note), Response::HTTP_CREATED);
     }

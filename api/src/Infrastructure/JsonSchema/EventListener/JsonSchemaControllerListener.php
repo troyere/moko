@@ -36,12 +36,12 @@ class JsonSchemaControllerListener
             assert(is_string($content));
 
             $jsonData = json_decode($content);
-            if ($jsonData === null) {
+            if (null === $jsonData) {
                 throw new JsonDecodeReturnsNullException();
             }
 
             $jsonSchema = file_get_contents($annotation->getPath());
-            if ($jsonSchema === false) {
+            if (false === $jsonSchema) {
                 throw new SchemaFileNotReadableException();
             }
 
@@ -55,7 +55,7 @@ class JsonSchemaControllerListener
 
         if ($reflection instanceof ReflectionMethod) {
             return $this->annotationReader->getMethodAnnotation($reflection, $annotationName);
-        } else if ($reflection instanceof ReflectionClass) {
+        } elseif ($reflection instanceof ReflectionClass) {
             return $this->annotationReader->getClassAnnotation($reflection, $annotationName);
         }
 
@@ -67,11 +67,12 @@ class JsonSchemaControllerListener
         try {
             if (is_array($controller)) {
                 return new ReflectionMethod($controller[0], $controller[1]);
-            } else if (is_object($controller) && is_callable([$controller, '__invoke'])) {
+            } elseif (is_object($controller) && is_callable([$controller, '__invoke'])) {
                 return new ReflectionClass($controller);
-            } else if (is_string($controller) || $controller instanceof Closure) {
+            } elseif (is_string($controller) || $controller instanceof Closure) {
                 return new ReflectionFunction($controller);
             }
+
             return null;
         } catch (ReflectionException $e) {
             throw new UnexpectedValueException('Invalid controller.', 0, $e);

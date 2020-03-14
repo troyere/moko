@@ -15,7 +15,7 @@ class NoteValuesParamConverter implements ParamConverterInterface
         assert(is_string($request->getContent()));
 
         $content = json_decode($request->getContent());
-        if ($content === null) {
+        if (null === $content) {
             throw new JsonDecodeReturnsNullException();
         }
 
@@ -26,6 +26,6 @@ class NoteValuesParamConverter implements ParamConverterInterface
 
     public function supports(ParamConverter $configuration): bool
     {
-        return $configuration->getClass() === NoteValues::class;
+        return NoteValues::class === $configuration->getClass();
     }
 }

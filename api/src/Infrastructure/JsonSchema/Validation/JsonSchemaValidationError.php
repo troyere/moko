@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\JsonSchema\Validation;
 
-use StdClass;
 use JsonSerializable;
+use StdClass;
 
 class JsonSchemaValidationError implements JsonSerializable
 {

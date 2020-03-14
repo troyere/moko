@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class UpdateNoteController
 {
-    public function __invoke(UpdateNote $updateNote, NoteId $id, NoteValues $note) : JsonResponse
+    public function __invoke(UpdateNote $updateNote, NoteId $id, NoteValues $note): JsonResponse
     {
         return new JsonResponse($updateNote($id, $note), Response::HTTP_OK);
     }

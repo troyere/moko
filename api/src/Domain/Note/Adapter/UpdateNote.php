@@ -8,5 +8,5 @@ use App\Domain\Note\ValueObject\NoteValues;
 
 interface UpdateNote
 {
-    public function __invoke(NoteId $id, NoteValues $note) : Note;
+    public function __invoke(NoteId $id, NoteValues $note): Note;
 }
