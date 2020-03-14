@@ -3,6 +3,12 @@
 COMPOSER_BIN = ./composer.phar
 PHP_BIN = php
 
+# Test
+
+.PHONY: test
+test:
+	$(PHP_BIN) vendor/bin/phpunit --testdox
+
 # Static Analysis
 
 .PHONY: phpstan
@@ -11,14 +17,14 @@ phpstan:
 
 # Check Code Style
 
-.PHONY: phpcs
-phpcs:
+.PHONY: cs
+cs:
 	$(PHP_BIN) vendor/bin/phpcs
 
 # Fix Code Style
 
-.PHONY: phpcsfix
-phpcsfix:
+.PHONY: csfix
+csfix:
 	$(PHP_BIN) vendor/bin/phpcbf
 
 # Project Installation
